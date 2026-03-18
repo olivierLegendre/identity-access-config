@@ -12,3 +12,9 @@ __pycache__/
 node_modules/
 .next/
 dist/
+
+# Local IAM bootstrap secrets/env
+.env.keycloak
+
+# Local generated realm artifacts
+keycloak/generated/*.local.json

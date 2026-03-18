@@ -1,0 +1,139 @@
+{
+  "realm": "${KEYCLOAK_REALM}",
+  "enabled": true,
+  "displayName": "IoT Platform",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "resetPasswordAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "rememberMe": false,
+  "internationalizationEnabled": false,
+  "roles": {
+    "realm": [
+      { "name": "viewer", "description": "Read-only operational access" },
+      { "name": "operator", "description": "Operate devices and workflows" },
+      { "name": "approver", "description": "Approve gated operational actions" },
+      { "name": "scenario_publisher", "description": "Publish automation scenarios" },
+      { "name": "site_admin", "description": "Site-level administration" },
+      { "name": "org_admin", "description": "Organization-level administration" }
+    ]
+  },
+  "clientScopes": [
+    {
+      "name": "iot-site",
+      "description": "Site scope claim for tenant boundary enforcement",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "site",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "site",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "site",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "name": "iot-organization",
+      "description": "Organization scope claim for hard isolation boundary",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "organization",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "organization",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "organization",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+  "defaultDefaultClientScopes": [
+    "profile",
+    "email",
+    "roles",
+    "iot-site",
+    "iot-organization"
+  ],
+  "clients": [
+    {
+      "clientId": "operator-ui",
+      "name": "Operator UI",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "${OPERATOR_UI_REDIRECT_URI}"
+      ],
+      "webOrigins": [
+        "${OPERATOR_UI_WEB_ORIGIN}"
+      ]
+    },
+    {
+      "clientId": "reference-api-service",
+      "name": "Reference API Service",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true
+    },
+    {
+      "clientId": "device-ingestion-service",
+      "name": "Device Ingestion Service",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true
+    },
+    {
+      "clientId": "channel-policy-router",
+      "name": "Channel Policy Router",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true
+    },
+    {
+      "clientId": "automation-scenario-service",
+      "name": "Automation Scenario Service",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true
+    }
+  ]
+}

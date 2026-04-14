@@ -18,3 +18,8 @@ dist/
 
 # Local generated realm artifacts
 keycloak/generated/*.local.json
+
+# Python packaging artifacts
+*.egg-info/
+*.egg
+.eggs/
